@@ -164,3 +164,36 @@ export AWS_REGION="us-west-2"
 ```
 
 Depois de exportar suas variáveis de ambiente, o Terraform usará essas credenciais para se autenticar na AWS. Lembre-se de proteger suas credenciais e não compartilhá-las publicamente.
+
+## Backend remoto
+
+O backend remoto permite armazenar o statefile em um local centralizado, como um bucket S3. Isso facilita o trabalho em equipe e garante a consistência do estado da infraestrutura.
+
+Exemplo de configuração de backend remoto:
+
+```hcl
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["099720109477"] # Canonical
+}
+
+resource "aws_instance" "web" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+```
