@@ -1,18 +1,26 @@
-terraform {
-  backend "s3" {
-    bucket = "descomplicando-terraform-turma-2024"
-    key    = "aula_backend"
-    region = "us-east-1"
+# Busca a última imagem do Ubuntu 22.04 LTS no AWS Marketplace
+data "aws_ami" "ubuntu" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
   }
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
   }
+
+  owners = ["099720109477"] # Canonical
 }
 
-# Configure the AWS Provider
-provider "aws" {
-  region = "us-east-2"
+# Cria uma instância EC2
+resource "aws_instance" "web" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "HelloWorld"
+  }
 }

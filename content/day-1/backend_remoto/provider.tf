@@ -1,24 +1,19 @@
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+# Define o backend remoto
+terraform {
+  backend "s3" {
+    bucket = "terraform2024-granato"
+    key    = "backend_remoto"
+    region = "us-east-1"
   }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
-
-  owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
-
-  tags = {
-    Name = "HelloWorld"
-  }
+# Configure o provedor AWS
+provider "aws" {
+  region = "us-east-2"
 }
