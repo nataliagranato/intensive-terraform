@@ -172,28 +172,141 @@ O backend remoto permite armazenar o statefile em um local centralizado, como um
 Exemplo de configuração de backend remoto:
 
 ```hcl
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+terraform {
+  backend "s3" {
+    bucket = "my-terraform-state"
+    key    = "terraform.tfstate"
+    region = "us-west-2"
   }
+```
 
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
+Adicione essa configuração ao seu arquivo `.tf` para usar um backend remoto.
 
-  owners = ["099720109477"] # Canonical
-}
+Caso o terraform já tenha sido inicializado com um backend local, você pode migrar para um backend remoto, normalmente ao utilizar o `terraform init` ele irá perguntar se deseja levar para o seu backend o estado local, caso não pergunte, você pode forçar a migração com o comando `terraform init -reconfigure`. Em caso de erro use o comando `terraform init -migrate-state`.
 
-resource "aws_instance" "web" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.micro"
+# O que são os providers no Terraform?
 
-  tags = {
-    Name = "HelloWorld"
-  }
+Os providers são plugins que permitem que o Terraform interaja com diferentes provedores de nuvem, como AWS, Azure, GCP, etc. Cada provedor tem seu próprio plugin, que fornece os recursos e a lógica necessária para gerenciar a infraestrutura na nuvem.
+
+Para usar um provedor no Terraform, você precisa configurar as credenciais de acesso e a região do provedor. Isso permite que o Terraform se autentique e provisione recursos na nuvem.
+
+Exemplo de configuração de um provedor AWS:
+
+```hcl
+provider "aws" {
+  region     = "us-west-2"
+  access_key = "my-access
+  secret_key
+  = "my-secret key"
 }
 ```
+
+Neste exemplo, o bloco `provider "aws"` configura o provedor AWS com a região `us-west-2` e as credenciais de acesso fornecidas. Isso permite que o Terraform provisione recursos na AWS.
+
+Outra forma de autenticar o Terraform é utilizando variáveis de ambiente, como `AWS_ACCESS_KEY_ID` e `AWS_SECRET_ACCESS_KEY`. Isso evita a exposição de credenciais no código e facilita a gestão de segurança.
+
+```bash
+export AWS_ACCESS_KEY_ID="my-access-key"
+export AWS_SECRET_ACCESS_KEY="my-secret-key"
+export AWS_REGION="us-west-2"
+```
+
+## Utilizando o alias para múltiplos providers
+
+Com essa opção, é possível utilizar múltiplos providers de um mesmo tipo, por exemplo, dois providers AWS, um para cada região. Para isso, é necessário utilizar o alias para diferenciar os providers.
+
+```hcl
+terraform {
+  backend "s3" {
+    bucket = "descomplicando-terraform-turma-2024"
+    key    = "aula_backend"
+    region = "us-east-1"
+  }
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider "aws" {
+  region = "us-east-2"
+}
+
+provider "aws" {
+  alias  = "west"
+  region = "us-west-2"
+}
+```
+
+# O que é e como usar variáveis no Terraform?
+
+É a possibilidade de definir valores dinâmicos para os recursos, evitando a repetição de código e facilitando a manutenção. Além disso, as informações que precisam ser alteradas com frequência nao ficam fixas no código - o chamado hardcode -.
+
+Podemos modificar o comportamento do código de acordo com o ambiente, como por exemplo, alterar o nome de uma instância EC2 de acordo com as variáveis de ambiente, de distintas maneiras.
+
+### Declarando variáveis
+
+É possível declarar variáveis no arquivo `variables.tf` ou diretamente no arquivo `.tf` que está sendo utilizado no bloco chamado `variable`.
+
+```hcl
+variable "instance_name" {
+  description = "O nome da instância EC2"
+  type        = string
+  default     = "my-instance"
+}
+```
+
+As principais formas de declarar variáveis são:
+
+- **Linha de comando:** Usando a flag `-var` para passar valores diretamente na linha de comando.
+
+```bash
+terraform plan -out plano -var="instance_name=my-instance"
+```
+
+- **Arquivo de variáveis:** Criando um arquivo de variáveis separado e passando-o para o Terraform no bloco `variables`.
+  
+```hcl
+variable "instance_name" {
+  type = string
+  description = "O nome da instância EC2"
+}
+```
+
+No arquivo de variáveis voce pode definir um valor como sensivel, para isso basta adicionar o atributo `sensitive = true` na declaração da variável.
+
+- **Variáveis de ambiente:** Usando variáveis de ambiente para definir valores.
+
+```bash
+export TF_VAR_instance_name=my-instance
+```
+
+- Utilizando o arquivo **`terraform.tfvars`** para definir as variáveis. O arquivo pode ter o seguinte conteúdo:
+
+```hcl
+instance_name = "my-instance"
+```
+
+Para utilizar o arquivo de **`terraform.tfvars`**:
+
+```bash
+terraform plan -out plano -var-file="testing.tfvars"
+```
+
+Outra forma de utilizar o `.tfvars` é através do `auto.tfvars`, assim:
+
+```bash
+terraform plan -out plano
+```
+
+O terraform irá buscar automaticamente o arquivo `auto.tfvars` ou `terraform.tfvars` para carregar as variáveis.
+
+Caso você os distintos arquivos de declaração de variáveis, o Terraform irá seguir a seguinte ordem de importância para carregar as variáveis:
+
+0. Variáveis de ambiente.
+1. Utilizando -var e -var-file na linha de comando.
+2. Utilizando os arquivos que terminam com `.auto.tfvars`.
+3. Utilizando os arquivos que terminam com `.tfvars`.

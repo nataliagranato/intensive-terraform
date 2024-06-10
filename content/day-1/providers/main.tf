@@ -1,4 +1,3 @@
-# Busca a última imagem do Ubuntu 22.04 LTS no AWS Marketplace
 data "aws_ami" "ubuntu" {
   most_recent = true
 
@@ -12,15 +11,26 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical 
+  owners = ["099720109477"] # Canonical
 }
 
-# Cria uma instância EC2
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
 
   tags = {
     Name = "HelloWorld"
+    Env  = "develop"
+  }
+}
+
+resource "aws_instance" "webwest" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "t3.micro"
+  provider      = aws.west
+
+  tags = {
+    Name = "HelloWorld"
+    Env  = "develop"
   }
 }
