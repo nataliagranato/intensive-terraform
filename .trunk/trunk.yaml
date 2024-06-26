@@ -33,3 +33,11 @@ actions:
     - trunk-fmt-pre-commit
   enabled:
     - trunk-upgrade-available
+tools:
+  enabled:
+    - tfupdate@0.8.2
+    - terraform-docs@0.18.0
+    - terraform@1.1.4
+    - terrascan@1.19.1
+    - tofu@1.7.2
+    - tfsec@1.28.6
