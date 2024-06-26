@@ -268,7 +268,7 @@ terraform plan -out plano -var="instance_name=my-instance"
 ```
 
 - **Arquivo de variáveis:** Criando um arquivo de variáveis separado e passando-o para o Terraform no bloco `variables`.
-  
+
 ```hcl
 variable "instance_name" {
   type = string

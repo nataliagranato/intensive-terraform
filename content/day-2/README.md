@@ -20,7 +20,7 @@ Para configurar o armazenamento remoto do estado, você pode usar o bloco `backe
 terraform {
     backend "s3" {
         bucket = "terraform2024-granato"
-        key    = "state" 
+        key    = "state"
         region = "us-east-1"
     }
 }
@@ -40,10 +40,10 @@ Para configurar o bloqueio de estado com o DynamoDB, você pode adicionar o segu
 // This Terraform configuration sets up the DynamoDB table for state locking.
 terraform {
   backend "s3" {
-    bucket         = "descomplicando-terraform-turma-2024"
+    bucket         = "terraform2024-granato"
     key            = "aula_backend"
     region         = "us-east-1"
-    dynamodb_table = "descomplicando-terraform-turma-2024"
+    dynamodb_table = "terraform2024-granato"
   }
   required_providers {
     aws = {
@@ -55,3 +55,27 @@ terraform {
 ```
 
 Com o bloco acima, o Terraform usará o DynamoDB para bloquear o estado do Terraform, garantindo que apenas um usuário ou processo possa modificar o estado por vez. Isso evita conflitos e garante a consistência do estado.
+
+# Utilizando workspaces no Terraform
+
+Os workspaces no Terraform são uma maneira de organizar e gerenciar diferentes ambientes de infraestrutura dentro de um mesmo diretório de configuração. Cada workspace tem seu próprio estado e pode ser usado para gerenciar ambientes de desenvolvimento, teste, produção, entre outros.
+
+Para criar um novo workspace, você pode usar o comando `terraform workspace new <nome>`. Por exemplo, para criar um workspace chamado `dev`, você pode executar o seguinte comando:
+
+```bash
+terraform workspace new dev
+```
+
+Depois de criar um workspace, você pode alternar entre os workspaces usando o comando `terraform workspace select <nome>`. Por exemplo, para alternar para o workspace `dev`, você pode executar o seguinte comando:
+
+```bash
+terraform workspace select dev
+```
+
+É importante ter atenção ao usar workspaces, pois eles compartilham o mesmo diretório de configuração e podem causar conflitos se não forem usados corretamente. Certifique-se de que cada workspace tenha suas próprias configurações e variáveis para evitar conflitos entre os ambientes.
+
+Se você está criando recursos em uma mesma região, mas utilizando workspaces, atente-se ao nome dos recursos, pois o Terraform não permite a criação de recursos com o mesmo nome em workspaces diferentes.
+
+# Import de recursos existentes
+
+O Terraform permite importar recursos existentes em um estado gerenciado por ele. Isso é útil quando você deseja gerenciar recursos que foram criados fora do Terraform ou que foram criados manualmente.
