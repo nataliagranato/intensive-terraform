@@ -296,3 +296,52 @@ Planning failed. Terraform encountered an error while generating this plan.
 ```
 
 Agora execute o plano e apply novamente e veja a mágica acontecer.
+
+# Utilizando outputs e outputs de um remote state
+
+Os outputs no Terraform são uma maneira de expor informações sobre os recursos criados para serem usadas por outros recursos ou para serem exibidas ao usuário. Eles são úteis para fornecer informações sobre o estado da infraestrutura e para compartilhar dados entre módulos.
+
+Para definir um output no Terraform, você pode adicionar o bloco `output` ao seu arquivo de configuração. Por exemplo, para expor o ID de uma instância EC2, você pode adicionar o seguinte bloco ao seu arquivo de configuração:
+
+```hcl
+output "instance_id" {
+  value = aws_instance.web.id
+}
+```
+
+Você verá o output no final do comando `terraform apply`:
+
+```bash
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+instance_ip_addr = "172.31.34.92"
+```
+
+# Obtendo outputs de um remote state e utilizando no seu código Terraform
+
+Para obter os outputs de um estado remoto no Terraform, você pode usar o bloco `data` com o tipo `terraform_remote_state`. Isso permite que você acesse os outputs de um estado remoto e os utilize em seu código Terraform.
+
+Para obter os outputs de um estado remoto, você pode adicionar o seguinte bloco ao seu arquivo de configuração:
+
+```hcl
+data "terraform_remote_state" "remote" {
+  backend = "s3"
+  config = {
+    bucket = "terraform2024-granato"
+    key    = "state"
+    region = "us-east-1"
+  }
+}
+```
+
+Com esse bloco, você pode acessar os outputs do estado remoto usando a sintaxe `data.terraform_remote_state.remote.outputs.<nome_do_output>`. Por exemplo, para acessar o output `instance_id` do estado remoto, você pode usar a seguinte sintaxe:
+
+```hcl
+output "remote_instance_id" {
+  value = data.terraform_remote_state.remote.outputs.instance_id
+}
+```
+
+Dessa forma, você pode acessar os outputs de um estado remoto e utilizá-los em seu código Terraform. Isso é útil para compartilhar informações entre diferentes configurações do Terraform e para reutilizar dados em vários módulos.
