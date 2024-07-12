@@ -1,0 +1,57 @@
+name: Terraform CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  terraform:
+    name: Terraform CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Install TFLint
+        run: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+
+      - name: Find Terraform directories
+        id: find_tf_dirs
+        run: |
+          echo "::set-output name=tf_dirs::$(find . -type f -name '*.tf' -exec dirname {} \; | sort -u | xargs)"
+      
+      - name: Terraform fmt
+        run: |
+          for dir in ${{ steps.find_tf_dirs.outputs.tf_dirs }}; do
+            terraform fmt -check -recursive "$dir"
+          done
+
+      - name: Terraform validate
+        run: |
+          for dir in ${{ steps.find_tf_dirs.outputs.tf_dirs }}; do
+            cd "$dir"
+            terraform init -backend=false
+            terraform validate
+            cd -
+          done
+
+      - name: TFLint
+        run: |
+          for dir in ${{ steps.find_tf_dirs.outputs.tf_dirs }}; do
+            tflint "$dir"
+          done
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.
