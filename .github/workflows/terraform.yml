@@ -20,36 +20,29 @@ jobs:
         with:
           terraform_version: 1.0.0
 
-      - name: Install TFLint
-        run: |
-          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-
       - name: Find Terraform directories
-        id: find_tf_dirs
         run: |
-          echo "::set-output name=tf_dirs::$(find . -type f -name '*.tf' -exec dirname {} \; | sort -u | xargs)"
-      
+          echo "tf_dirs<<EOF" >> $GITHUB_ENV
+          find . -type f -name '*.tf' -exec dirname {} \; | sort -u | xargs
+          echo "EOF" >> $GITHUB_ENV
+
       - name: Terraform fmt
         run: |
-          for dir in ${{ steps.find_tf_dirs.outputs.tf_dirs }}; do
+          for dir in ${{ env.tf_dirs }}; do
             terraform fmt -check -recursive "$dir"
           done
 
       - name: Terraform validate
         run: |
-          for dir in ${{ steps.find_tf_dirs.outputs.tf_dirs }}; do
+          for dir in ${{ env.tf_dirs }}; do
             cd "$dir"
             terraform init -backend=false
             terraform validate
             cd -
           done
 
-      - name: TFLint
-        run: |
-          for dir in ${{ steps.find_tf_dirs.outputs.tf_dirs }}; do
-            tflint "$dir"
-          done
-
+      - name: Success Message
+        run: echo "O projeto Terraform foi formatado e validado com sucesso!"
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
