@@ -26,9 +26,20 @@ jobs:
       - name: Clone repo
         uses: actions/checkout@v4
 
-      - name: Run tfsec
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Create temp directory and copy Terraform files except import.tf
+        run: |
+          mkdir temp_dir
+          find . -name '*.tf' ! -name 'import.tf' -exec cp {} temp_dir \;
+
+      - name: Run tfsec on temp directory
         uses: aquasecurity/tfsec-sarif-action@21ded20e8ca120cd9d3d6ab04ef746477542a608
         with:
+          working_directory: temp_dir
           sarif_file: tfsec.sarif
 
       - name: Upload SARIF file
