@@ -128,3 +128,72 @@ module "aws-ec2" {
   environment = "dev"
 }
 ```
+
+## Utilizando condicionais no código
+
+É possível utilizar condicionais no código para controlar o fluxo de execução do Terraform. As condicionais permitem executar blocos de código com base em condições específicas.
+
+### Operadores de comparação
+
+Os operadores de comparação são utilizados para comparar valores e retornar um resultado booleano. Os operadores de comparação mais comuns são:
+
+- `==` (igual a): Retorna verdadeiro se os valores comparados forem iguais.
+
+- `!=` (diferente de): Retorna verdadeiro se os valores comparados forem diferentes.
+
+- `>` (maior que): Retorna verdadeiro se o valor da esquerda for maior que o valor da direita.
+
+### Um exemplo de condição
+
+```hcl
+resource "aws_instance" "web" {
+  count                   = var.environment == "prod" ? 2 : 1
+  ami                     = data.aws_ami.ubuntu.id
+  instance_type           = "t3.micro"
+  disable_api_termination = true
+  metadata_options {
+    http_tokens = "required"
+
+  }
+
+  root_block_device {
+    encrypted = true
+
+  }
+
+  tags = {
+    Name       = var.nome
+    Env        = var.environment
+    Plataforma = data.aws_ami.ubuntu.platform_details
+  }
+}
+```
+
+A linha `count = var.environment == "prod" ? 2 : 1` usa uma expressão condicional para determinar quantas instâncias serão criadas. Se a variável `environment` for igual a `"prod"`, então `count` será 2, criando duas instâncias; caso contrário, será 1, criando apenas uma instância. Isso permite flexibilidade na alocação de recursos com base no ambiente de implantação.
+
+### Utilizando condicionais com módulos
+
+É possível utilizar condicionais com módulos para controlar a criação de recursos com base em condições específicas. Por exemplo, é possível criar um módulo que cria um recurso apenas se uma variável específica for verdadeira.
+
+```hcl
+# Definição de uma variável para controlar a criação do recurso
+variable "criar_recurso" {
+  description = "Um booleano que determina se o recurso deve ser criado"
+  type        = bool
+}
+
+# Módulo condicional
+module "meu_recurso_condicional" {
+  source = "./caminho/do/modulo"
+
+  count = var.criar_recurso ? 1 : 0
+
+  # Argumentos do módulo aqui
+}
+
+# Exemplo de uso do módulo com a variável
+# Para criar o recurso, defina a variável criar_recurso como true
+# terraform apply -var "criar_recurso=true"
+```
+
+Neste exemplo, o módulo `meu_recurso_condicional` será criado apenas se a variável `criar_recurso` for verdadeira. Isso permite controlar a criação de recursos com base em condições específicas, tornando o código mais flexível e reutilizável.
