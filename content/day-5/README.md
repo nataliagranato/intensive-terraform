@@ -197,3 +197,73 @@ module "meu_recurso_condicional" {
 ```
 
 Neste exemplo, o módulo `meu_recurso_condicional` será criado apenas se a variável `criar_recurso` for verdadeira. Isso permite controlar a criação de recursos com base em condições específicas, tornando o código mais flexível e reutilizável.
+
+## Utilizando for_each em seu módulo
+
+O `for_each` é uma função que permite iterar sobre uma coleção de valores e criar recursos dinamicamente com base nesses valores. Isso é útil quando você deseja criar vários recursos com base em uma lista de valores.
+
+### Um exemplo de uso do `for_each`
+
+```hcl
+# Definição de uma variável contendo uma lista de valores
+variable "instancias" {
+  description = "Uma lista de instâncias a serem criadas"
+  type        = list(object({
+    nome        = string
+    environment = string
+    region      = string
+  }))
+  default = [
+    {
+      nome        = "instancia1"
+      environment = "dev"
+      region      = "us-east-1"
+    },
+    {
+      nome        = "instancia2"
+      environment = "prod"
+      region      = "us-west-2"
+    },
+  ]
+}
+```
+
+O código HCL (HashiCorp Configuration Language) abaixo define uma variável no Terraform chamada `instancias`. Esta variável é usada para armazenar uma lista de objetos, onde cada objeto representa uma instância com atributos específicos. Vamos detalhar cada parte do código:
+
+```hcl
+# Definição de uma variável contendo uma lista de valores
+variable "instancias" {
+  description = "Uma lista de instâncias a serem criadas"
+  type        = list(object({
+    nome        = string
+    environment = string
+    region      = string
+  }))
+  default = [
+    {
+      nome        = "instancia1"
+      environment = "dev"
+      region      = "us-east-1"
+    },
+    {
+      nome        = "instancia2"
+      environment = "prod"
+      region      = "us-west-2"
+    },
+  ]
+}
+```
+
+### Explicação do Código
+
+- **variable "instancias"**: Declara uma nova variável chamada `instancias`.
+
+- **description**: Fornece uma descrição para a variável, explicando que ela armazena uma lista de instâncias que serão criadas.
+
+- **type**: Define o tipo da variável como uma lista (`list`) de objetos (`object`). Cada objeto na lista deve seguir uma estrutura específica, que inclui três atributos: `nome`, `environment`, e `region`, todos do tipo `string`.
+
+- **default**: Estabelece um valor padrão para a variável `instancias`. Neste caso, o valor padrão é uma lista contendo dois objetos, cada um representando uma instância com valores específicos para `nome`, `environment`, e `region`:
+  - O primeiro objeto define uma instância chamada `instancia1`, marcada como um ambiente de desenvolvimento (`dev`), e localizada na região `us-east-1`.
+  - O segundo objeto define uma instância chamada `instancia2`, marcada como um ambiente de produção (`prod`), e localizada na região `us-west-2`.
+
+Este código facilita a configuração de múltiplas instâncias em diferentes ambientes e regiões, permitindo uma abordagem declarativa e reutilizável para definir recursos no Terraform.
