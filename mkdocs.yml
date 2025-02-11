@@ -1,0 +1,137 @@
+---
+site_name: Terraform Intensivo
+site_url: https://nataliagranato.github.io/intensive-terraform
+repo_url: https://github.com/nataliagranato/intensive-terraform
+edit_uri: blob/devel/docs/
+docs_dir: docs
+strict: true
+use_directory_urls: false
+
+theme:
+  name: "ansible"
+  features:
+    - content.code.copy
+    - content.action.edit
+    - navigation.expand
+    - navigation.sections
+    - navigation.instant
+    - navigation.indexes
+    - navigation.tracking
+    - toc.integrate
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: teal
+      accent: blue
+      scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: teal
+      accent: blue
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+nav:
+  - Home: index.md
+  - Installation:
+      - installation/basic-install.md
+      - installation/kind-install.md
+      - installation/creating-a-minikube-cluster-for-testing.md
+  - Migrate:
+      - migration/migration.md
+  - Upgrade:
+      - upgrade/upgrading.md
+  - Uninstall:
+      - uninstall/uninstall.md
+  - User Guide:
+      - user-guide/admin-user-account-configuration.md
+      - user-guide/network-and-tls-configuration.md
+      - user-guide/database-configuration.md
+  - Advanced Configuration:
+      - user-guide/advanced-configuration/deploying-a-specific-version-of-awx.md
+      - user-guide/advanced-configuration/redis-container-capabilities.md
+      - user-guide/advanced-configuration/privileged-tasks.md
+      - user-guide/advanced-configuration/host-aliases.md
+      - user-guide/advanced-configuration/containers-resource-requirements.md
+      - user-guide/advanced-configuration/priority-classes.md
+      - user-guide/advanced-configuration/scaling-the-web-and-task-pods-independently.md
+      - user-guide/advanced-configuration/horizontal-pod-autoscaler.md
+      - user-guide/advanced-configuration/assigning-awx-pods-to-specific-nodes.md
+      - user-guide/advanced-configuration/trusting-a-custom-certificate-authority.md
+      - user-guide/advanced-configuration/custom-receptor-certs.md
+      - user-guide/advanced-configuration/enabling-ldap-integration-at-awx-bootstrap.md
+      - user-guide/advanced-configuration/persisting-projects-directory.md
+      - user-guide/advanced-configuration/custom-volume-and-volume-mount-options.md
+      - user-guide/advanced-configuration/exporting-environment-variables-to-containers.md
+      - user-guide/advanced-configuration/csrf-cookie-secure-setting.md
+      - user-guide/advanced-configuration/session-cookie-secure-setting.md
+      - user-guide/advanced-configuration/extra-settings.md
+      - user-guide/advanced-configuration/no-log.md
+      - user-guide/advanced-configuration/auto-upgrade.md
+      - user-guide/advanced-configuration/service-account.md
+      - user-guide/advanced-configuration/labeling-operator-managed-objects.md
+      - user-guide/advanced-configuration/pods-termination-grace-period.md
+      - user-guide/advanced-configuration/security-context.md
+      - user-guide/advanced-configuration/container-probes.md
+      - user-guide/advanced-configuration/disable-ipv6.md
+      - user-guide/advanced-configuration/mesh-ingress.md
+  - Troubleshooting:
+      - troubleshooting/debugging.md
+  - Contributors Guide:
+      - contributors-guide/contributing.md
+      - contributors-guide/release-process.md
+      - contributors-guide/author.md
+      - contributors-guide/code-of-conduct.md
+      - contributors-guide/get-involved.md
+
+exclude_docs:
+  README.md
+
+plugins:
+  - autorefs
+  - markdown-exec
+  - material/search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            # Sphinx is for historical reasons, but we could consider switching if needed
+            # https://mkdocstrings.github.io/griffe/docstrings/
+            docstring_style: sphinx
+            merge_init_into_class: yes
+            show_submodules: yes
+          import:
+            - url: https://docs.ansible.com/ansible/latest/objects.inv
+              domains: [py, std]
+
+markdown_extensions:
+  - admonition
+  - def_list
+  - footnotes
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets:
+      check_paths: true
+  - pymdownx.superfences
+  - pymdownx.magiclink:
+      repo_url_shortener: true
+      repo_url_shorthand: true
+      social_url_shorthand: true
+      social_url_shortener: true
+      user: facelessuser
+      repo: pymdown-extensions
+      normalize_issue_symbols: true
+  - pymdownx.tabbed:
+      alternate_style: true
+  - toc:
+      toc_depth: 2
+      permalink: true
