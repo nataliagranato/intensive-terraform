@@ -1,0 +1,13 @@
+{
+    "name": "intensive-terraform-docs",
+    "version": "1.0.0",
+    "description": "Documentação do projeto Intensive Terraform",
+    "main": "index.js",
+    "scripts": {
+      "build": "docusaurus build"
+    },
+    "dependencies": {
+      "@docusaurus/core": "^2.0.0",
+      "@docusaurus/preset-classic": "^2.0.0"
+    }
+  }
