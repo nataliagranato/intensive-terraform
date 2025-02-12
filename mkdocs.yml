@@ -8,7 +8,15 @@ repo_url: https://github.com/nataliagranato/intensive-terraform
 theme:
   name: material
   language: pt-BR
-
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
   features:
     - announce.dismiss
     - content.action.edit
