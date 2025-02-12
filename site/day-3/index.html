@@ -1,0 +1,1139 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://terraform.nataliagranato.xyz/day-3/">
+      
+      
+        <link rel="prev" href="../day-2/">
+      
+      
+        <link rel="next" href="../day-5/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.3">
+    
+    
+      
+        <title>Usando modúlos no Terraform - Terraform Intensivo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.d7758b05.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Usando modúlos no Terraform - Terraform Intensivo" >
+      
+        <meta  property="og:description"  content="None" >
+      
+        <meta  property="og:image"  content="https://terraform.nataliagranato.xyz/assets/images/social/day-3/README.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://terraform.nataliagranato.xyz/day-3/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Usando modúlos no Terraform - Terraform Intensivo" >
+      
+        <meta  name="twitter:description"  content="None" >
+      
+        <meta  name="twitter:image"  content="https://terraform.nataliagranato.xyz/assets/images/social/day-3/README.png" >
+      
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#usando-modulos-no-terraform" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Terraform Intensivo" class="md-header__button md-logo" aria-label="Terraform Intensivo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Terraform Intensivo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Usando modúlos no Terraform
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nataliagranato/intensive-terraform" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Terraform Intensivo" class="md-nav__button md-logo" aria-label="Terraform Intensivo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Terraform Intensivo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nataliagranato/intensive-terraform" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Welcome to MkDocs
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Blog
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Blog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Day 1
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Day 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-1/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Conhecendo o Terraform
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Day 2
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Day 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-2/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    O state file do Terraform
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Day 3
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Day 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Usando modúlos no Terraform
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Usando modúlos no Terraform
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-um-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de um módulo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilizando-um-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilizando um módulo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#organizando-modulos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organizando módulos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manipulando-informacoes-de-modulos-na-raiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manipulando informações de módulos na raiz
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#movendo-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      Movendo states
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alguns-recursos-para-melhorar-o-seu-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alguns recursos para melhorar o seu módulo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-locals-e-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions, locals e count
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-e-depends_on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lifecycle e depends_on
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao-do-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentação do Terraform
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Day 5
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Day 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-5/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    O que é um module source?
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Day 6
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            Day 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../day-6/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    O uso de for loop no Terraform
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#estrutura-de-um-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Estrutura de um módulo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#utilizando-um-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilizando um módulo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#organizando-modulos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Organizando módulos
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#manipulando-informacoes-de-modulos-na-raiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      Manipulando informações de módulos na raiz
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#movendo-states" class="md-nav__link">
+    <span class="md-ellipsis">
+      Movendo states
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alguns-recursos-para-melhorar-o-seu-modulo" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alguns recursos para melhorar o seu módulo
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#functions-locals-e-count" class="md-nav__link">
+    <span class="md-ellipsis">
+      Functions, locals e count
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lifecycle-e-depends_on" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lifecycle e depends_on
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentacao-do-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentação do Terraform
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="usando-modulos-no-terraform">Usando modúlos no Terraform</h1>
+<p>Utilizar modúlos no Terraform é uma prática recomendada para organizar e reutilizar código. Modúlos são um conjunto de recursos que são encapsulados em um diretório e podem ser reutilizados em diferentes partes do código.</p>
+<h2 id="estrutura-de-um-modulo">Estrutura de um módulo</h2>
+<p>A estrutura de um módulo é bem simples, ele é composto por um diretório com os arquivos <code>.tf</code> que definem os recursos que serão criados. A estrutura de um módulo pode ser a seguinte:</p>
+<pre><code>module
+│  main.tf
+│  variables.tf
+│  outputs.tf
+</code></pre>
+<ul>
+<li>
+<p><code>main.tf</code>: Arquivo que contém a definição dos recursos que serão criados.</p>
+</li>
+<li>
+<p><code>variables.tf</code>: Arquivo que contém a definição das variáveis que serão utilizadas no módulo.</p>
+</li>
+<li>
+<p><code>outputs.tf</code>: Arquivo que contém a definição das saídas que serão retornadas pelo módulo.</p>
+</li>
+</ul>
+<h2 id="utilizando-um-modulo">Utilizando um módulo</h2>
+<p>Para utilizar um módulo em um arquivo <code>.tf</code> basta utilizar a diretiva <code>module</code> e passar o caminho do diretório do módulo. Por exemplo:</p>
+<pre><code class="language-hcl">module &quot;example&quot; {
+  source = &quot;./module&quot;
+  variable1 = &quot;value1&quot;
+  variable2 = &quot;value2&quot;
+}
+</code></pre>
+<p>Neste exemplo, estamos utilizando o módulo que está no diretório <code>module</code> e passando os valores das variáveis <code>variable1</code> e <code>variable2</code>.</p>
+<h2 id="organizando-modulos">Organizando módulos</h2>
+<p>Para organizar os módulos em um projeto Terraform, é recomendado criar um diretório chamado <code>modules</code> e dentro dele criar um diretório para cada módulo. Por exemplo:</p>
+<pre><code>modules
+│ module1
+│ module2
+│ module3
+</code></pre>
+<p>Dessa forma, é possível organizar os módulos de forma mais clara e reutilizável. Normalmente os arquivos <code>.tf</code> de cada módulo são <code>provider.tf</code>, <code>variables.tf</code>, <code>main.tf</code> e <code>outputs.tf</code>.</p>
+<p>No módulo raiz do projeto crie um arquivo <code>main.tf</code> e utilize a diretiva <code>module</code> para chamar os módulos que deseja utilizar.</p>
+<p>No módulo raiz você pode chamar mais de um módulo, por exemplo:</p>
+<pre><code class="language-hcl">module &quot;module1&quot; {
+  source = &quot;./modules/module1&quot;
+  variable1 = &quot;value1&quot;
+  variable2 = &quot;value2&quot;
+}
+
+module &quot;module2&quot; {
+  source = &quot;./modules/module2&quot;
+  variable1 = &quot;value1&quot;
+  variable2 = &quot;value2&quot;
+}
+</code></pre>
+<p>Ao usar iniciar o Terraform com o comando <code>terraform init --upgrade</code> o Terraform irá baixar as dependências dos módulos e você poderá utilizar os recursos definidos nos módulos. Note que no diretório <code>.terraform</code> será criado um diretório chamado <code>modules</code> que contém os módulos baixados. Para maiiores informações sobre os módulos utilizados veja o arquivo <code>modules.json</code> que é criado no diretório <code>.terraform/modules</code>.</p>
+<h2 id="manipulando-informacoes-de-modulos-na-raiz">Manipulando informações de módulos na raiz</h2>
+<p>Para isso é necessário que o seu módulo tenha variáveis. Por exemplo, no módulo <code>module1</code> você pode definir uma variável chamada <code>nome</code> e no módulo raiz você pode passar o valor para essa variável. Por exemplo:</p>
+<pre><code class="language-hcl">module &quot;module1&quot; {
+  source = &quot;./modules/module1&quot;
+  nome = &quot;valor&quot;
+}
+</code></pre>
+<p>Dessa forma, você pode passar valores para as variáveis dos módulos e manipular as informações de acordo com a necessidade do seu projeto.</p>
+<h2 id="movendo-states">Movendo states</h2>
+<p>Com o <code>terraform state mv</code> é possível mover um recurso de um arquivo <code>.tfstate</code> para outro. Por exemplo, se você tem um recurso que está em um arquivo <code>.tfstate</code> e deseja mover para outro arquivo, você pode fazer isso com o comando <code>terraform state mv</code>. Vamos ver como isso funciona na prática.</p>
+<ol>
+<li>Listando states</li>
+</ol>
+<pre><code class="language-shell">terraform state list
+</code></pre>
+<ol>
+<li>Visualizando detalhes de um recurso</li>
+</ol>
+<pre><code class="language-shell">terraform state show module.projetoa.data.aws_ami.ubuntu
+</code></pre>
+<ol>
+<li>Movendo um recurso</li>
+</ol>
+<pre><code class="language-shell">terraform state mv aws_instance.web module.nataliagranato.aws_instance.web
+</code></pre>
+<p>Isso é muito útil quando você possui um recursos e deseja movê-lo para um módulo, por exemplo. Mover um recurso para um módulo é uma prática recomendada para O comando selecionado é utilizado no contexto do Terraform, uma ferramenta de infraestrutura como código (IaC) que permite definir, provisionar e gerenciar infraestrutura de TI através de arquivos de configuração. O comando em questão, <code>terraform state mv</code>, é usado para mover um item no estado do Terraform de um local para outro. Isso pode ser necessário por vários motivos, como reorganizar recursos, refatorar módulos ou ajustar a estrutura do projeto.</p>
+<p>No exemplo específico:</p>
+<pre><code class="language-shell">terraform state mv aws_instance.web module.nataliagranato.aws_instance.web
+</code></pre>
+<p>Este comando move o recurso <code>aws_instance.web</code>, que representa uma instância da AWS (Amazon Web Services), do escopo principal do projeto Terraform para dentro de um módulo chamado <code>nataliagranato</code>. O <code>aws_instance.web</code> após <code>module.nataliagranato.</code> indica que o recurso de instância AWS agora está sendo gerenciado dentro desse módulo.</p>
+<p>Mover um recurso para um módulo pode ser útil para melhor organizar os recursos, facilitar a reutilização de configurações em diferentes ambientes ou projetos, e melhorar a manutenção do código. É importante notar que esse comando altera apenas o estado do Terraform, sem afetar a infraestrutura real.</p>
+<p>É importante salientar que após mover um recurso no estado do Terraform para um modúlo, é necessário ajustar o código do projeto para refletir essa mudança. Isso pode envolver a atualização de referências ao recurso movido, a definição de variáveis de entrada e saída no módulo, e a garantia de que o código do módulo esteja corretamente integrado ao restante do projeto.</p>
+<p>Execute <code>terraform plan</code> para verificar as mudanças propostas antes de aplicá-las com <code>terraform apply</code>, garantindo que a alteração no estado esteja alinhada com a infraestrutura real.</p>
+<h2 id="alguns-recursos-para-melhorar-o-seu-modulo">Alguns recursos para melhorar o seu módulo</h2>
+<ul>
+<li><a href="https://developer.hashicorp.com/terraform/tutorials/modules/module">Documentação oficial do Terraform sobre módulos</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/tutorials/modules/module-create">Construindo módulos Terraform</a></li>
+<li><a href="https://github.com/terraform-aws-modules/terraform-aws-eks">Exemplo de módulo no GitHub</a></li>
+</ul>
+<h2 id="functions-locals-e-count">Functions, locals e count</h2>
+<p>O funcionamento de funções, locals e count em módulos é o mesmo que em arquivos <code>.tf</code> comuns. Você pode utilizar funções, locals e count em módulos para manipular informações e recursos de acordo com a necessidade do seu projeto.</p>
+<ul>
+<li>
+<p><a href="https://www.terraform.io/docs/language/functions/index.html">Funções no Terraform</a></p>
+</li>
+<li>
+<p><a href="https://www.terraform.io/docs/language/values/locals.html">Locals no Terraform</a></p>
+</li>
+<li>
+<p><a href="https://www.terraform.io/docs/language/meta-arguments/count.html">Count no Terraform</a></p>
+</li>
+</ul>
+<p>O <code>hcl</code> possui diversas funções embutidas que podem ser utilizadas para manipular informações ou transformar dados. Por exemplo, a função <code>format</code> pode ser utilizada para formatar uma string de acordo com um padrão específico. Veja um exemplo:</p>
+<pre><code class="language-hcl">locals {
+  formatted_string = format(&quot;Hello, %s!&quot;, var.name)
+}
+</code></pre>
+<p>Neste exemplo, a função <code>format</code> é utilizada para criar uma string formatada que inclui o valor da variável <code>name</code>. O resultado será uma string no formato <code>Hello, &lt;valor da variável name&gt;!</code>.</p>
+<p>Além da função <code>format</code>, o <code>hcl</code> possui diversas outras funções embutidas que podem ser utilizadas para manipular strings, números, listas, mapas e outros tipos de dados. Consulte a documentação oficial do Terraform para obter mais informações sobre as funções disponíveis e como utilizá-las.</p>
+<p>Vamos a outro exemplo:</p>
+<pre><code class="language-hcl">locals {
+  cidr_block_subnets = cidrsubnets(aws_vpc.main.cidr_block, 8, 8)
+}
+
+resource &quot;aws_vpc&quot; &quot;main&quot; {
+  cidr_block = var.cidr_block
+}
+
+resource &quot;aws_subnet&quot; &quot;main&quot; {
+  count = 2
+  vpc_id     = aws_vpc.main.id
+  cidr_block = local.cidr_block_subnets[count.index]
+
+  tags = {
+    Name = &quot;Main&quot;
+  }
+}
+</code></pre>
+<ol>
+<li>
+<p><strong>Bloco <code>locals</code>:</strong> Este bloco define uma variável local chamada <code>cidr_block_subnets</code>. A função <code>cidrsubnets</code> é utilizada para gerar uma lista de blocos CIDR para as sub-redes a partir do bloco CIDR da VPC. Os argumentos <code>8, 8</code> indicam o tamanho dos novos blocos CIDR que serão criados para as sub-redes.</p>
+</li>
+<li>
+<p><strong>Recurso <code>aws_vpc</code> chamado <code>main</code>:</strong> Este bloco define uma VPC na AWS. O atributo <code>cidr_block</code> é configurado para usar o valor da variável <code>var.cidr_block</code>, que deve ser fornecido externamente. Esta VPC serve como a base para a rede na qual as sub-redes serão criadas.</p>
+</li>
+<li>
+<p><strong>Recurso <code>aws_subnet</code> chamado <code>main</code>:</strong> Este bloco define as sub-redes dentro da VPC criada anteriormente. O atributo <code>count</code> é configurado para <code>2</code>, o que significa que duas instâncias deste recurso serão criadas. O <code>vpc_id</code> é definido para associar as sub-redes à VPC <code>aws_vpc.main</code>. O <code>cidr_block</code> de cada sub-rede é obtido da lista <code>local.cidr_block_subnets</code>, usando <code>count.index</code> para acessar os elementos individuais, garantindo que cada sub-rede tenha um bloco CIDR único dentro da VPC. Por fim, as sub-redes são etiquetadas com o nome "Main".</p>
+</li>
+</ol>
+<p>Este código ilustra o uso de variáveis locais, a função <code>cidrsubnets</code> para cálculo automático de blocos CIDR, e a criação de múltiplas instâncias de um recurso usando o atributo <code>count</code>. A estrutura permite a criação de uma VPC e sub-redes relacionadas de forma dinâmica e reutilizável, facilitando a gestão de redes na AWS com o Terraform.</p>
+<h2 id="lifecycle-e-depends_on">Lifecycle e depends_on</h2>
+<p>São recursos que podem ser utilizados para controlar a ordem de execução dos recursos no Terraform. O <code>lifecycle</code> permite definir configurações específicas para o ciclo de vida de um recurso, como a prevenção de destruição acidental ou a configuração de ações personalizadas.</p>
+<p>O <code>lifecycle</code> é uma configuração específica de um recurso. Por exemplo:</p>
+<pre><code class="language-hcl">resource &quot;aws_instance&quot; &quot;web&quot; {
+  # Configurações do recurso
+
+  lifecycle {
+    create_before_destroy = true 
+    prevent_destroy = true
+        ignore_changes = [
+      tags,
+    ]
+}
+</code></pre>
+<ul>
+<li>
+<p><strong>Create Before Destroy:</strong> Esta configuração garante que um novo recurso seja criado antes que o recurso antigo seja destruído. Isso é útil para garantir a disponibilidade contínua do recurso durante a atualização ou substituição.</p>
+</li>
+<li>
+<p><strong>Prevent Destroy:</strong> Esta configuração impede a destruição acidental do recurso. Quando ativada, o Terraform exibirá um aviso ao tentar destruir o recurso, solicitando confirmação antes de prosseguir.</p>
+</li>
+<li>
+<p><strong>Ignore Changes:</strong> Esta configuração permite ignorar alterações específicas em um recurso durante a atualização. Isso pode ser útil para evitar a interrupção de serviços ou a perda de dados durante a atualização.</p>
+</li>
+</ul>
+<p>Um ponto de ateção: se o <code>lifecycle</code> for definido no módulo filho e não for definido no módulo pai, o módulo pai não terá controle sobre o ciclo de vida do recurso.</p>
+<p>O <code>depends_on</code> é usado para especificar dependências explícitas entre recursos, garantindo que um recurso seja criado ou modificado apenas após a conclusão de outro recurso.</p>
+<h2 id="documentacao-do-terraform">Documentação do Terraform</h2>
+<ul>
+<li><a href="https://developer.hashicorp.com/terraform/cli">Terraform CLI</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/style">Style Guide</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/syntax">Sintaxe HCL</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/resources">Resources</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/providers">Providers</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/values">Variables and Outputs</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/modules">Modules</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/import">Import</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/state">State</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/tutorials">Tutorials</a></li>
+<li><a href="https://developer.hashicorp.com/terraform/language/tests">Testing HashiCorp Terraform</a></li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+    
+  </body>
+</html>
