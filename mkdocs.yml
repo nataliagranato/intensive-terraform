@@ -1,5 +1,5 @@
 site_name: Terraform Intensivo
-site_url: https://terraform.nataliagranato.xyz
+site_url: https://nataliagranato.github.io/intensive-terraform
 repo_url: https://github.com/nataliagranato/intensive-terraform
 theme:
   name: material
