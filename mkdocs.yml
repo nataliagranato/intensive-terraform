@@ -16,7 +16,7 @@ theme:
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
-      accent: indigo
+      accent: "#00FFFF"  # Ciano claro
   features:
     - announce.dismiss
     - content.action.edit
