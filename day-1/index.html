@@ -1,0 +1,1261 @@
+
+<!doctype html>
+<html lang="pt" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Este é um guia abrangente sobre Terraform, estruturado em diferentes dias de estudo que cobrem desde conceitos básicos até tópicos avançados. ">
+      
+      
+        <meta name="author" content="Natália Granato">
+      
+      
+        <link rel="canonical" href="https://nataliagranato.github.io/intensive-terraform/day-1/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../day-2/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.4">
+    
+    
+      
+        <title>Conhecendo o Terraform - Terraform Intensivo</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.8608ea7d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+      
+        <meta  property="og:type"  content="website" >
+      
+        <meta  property="og:title"  content="Conhecendo o Terraform - Terraform Intensivo" >
+      
+        <meta  property="og:description"  content="Este é um guia abrangente sobre Terraform, estruturado em diferentes dias de estudo que cobrem desde conceitos básicos até tópicos avançados. " >
+      
+        <meta  property="og:image"  content="https://nataliagranato.github.io/intensive-terraform/assets/images/social/day-1/README.png" >
+      
+        <meta  property="og:image:type"  content="image/png" >
+      
+        <meta  property="og:image:width"  content="1200" >
+      
+        <meta  property="og:image:height"  content="630" >
+      
+        <meta  property="og:url"  content="https://nataliagranato.github.io/intensive-terraform/day-1/" >
+      
+        <meta  name="twitter:card"  content="summary_large_image" >
+      
+        <meta  name="twitter:title"  content="Conhecendo o Terraform - Terraform Intensivo" >
+      
+        <meta  name="twitter:description"  content="Este é um guia abrangente sobre Terraform, estruturado em diferentes dias de estudo que cobrem desde conceitos básicos até tópicos avançados. " >
+      
+        <meta  name="twitter:image"  content="https://nataliagranato.github.io/intensive-terraform/assets/images/social/day-1/README.png" >
+      
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#conhecendo-o-terraform" class="md-skip">
+          Pular para conteúdo
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Cabeçalho">
+    <a href=".." title="Terraform Intensivo" class="md-header__button md-logo" aria-label="Terraform Intensivo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Terraform Intensivo
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Conhecendo o Terraform
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="#00FFFF"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Buscar" placeholder="Buscar" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Pesquisar">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Compartilhar" aria-label="Compartilhar" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Limpar" aria-label="Limpar" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Inicializando busca
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nataliagranato/intensive-terraform" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Abas" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Terraform Intensivo
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+    
+  
+  Day 1
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../day-2/" class="md-tabs__link">
+          
+  
+    
+  
+  Day 2
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../day-3/" class="md-tabs__link">
+          
+  
+    
+  
+  Day 3
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../day-5/" class="md-tabs__link">
+          
+  
+    
+  
+  Day 5
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../day-6/" class="md-tabs__link">
+          
+  
+    
+  
+  Day 6
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navegação" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Terraform Intensivo" class="md-nav__button md-logo" aria-label="Terraform Intensivo" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Terraform Intensivo
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nataliagranato/intensive-terraform" title="Ir para repositório" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Terraform Intensivo
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="./" class="md-nav__link md-nav__link--active">
+              
+  
+  <span class="md-ellipsis">
+    Day 1
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Day 1
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../day-2/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Day 2
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Day 2
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../day-3/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Day 3
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Day 3
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../day-5/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Day 5
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Day 5
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../day-6/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    Day 6
+    
+  </span>
+  
+
+            </a>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            Day 6
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Índice">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Índice
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#o-que-e-o-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      O que é o Terraform?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#o-que-e-hcl" class="md-nav__link">
+    <span class="md-ellipsis">
+      O que é HCL?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#o-que-e-o-statefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      O que é o Statefile?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#infraestrutura-mutavel-vs-imutavel" class="md-nav__link">
+    <span class="md-ellipsis">
+      Infraestrutura Mutável vs. Imutável
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#conceitos-basicos-de-cloud" class="md-nav__link">
+    <span class="md-ellipsis">
+      Conceitos Básicos de Cloud
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Conceitos Básicos de Cloud">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#providers-regiao-e-zona" class="md-nav__link">
+    <span class="md-ellipsis">
+      Providers, Região e Zona
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bucket-para-garantir-o-mesmo-estado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bucket para garantir o mesmo estado
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criando-um-usuario-iam-na-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      Criando um usuário IAM na AWS
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#criando-um-bucket-s3-com-acesso-publico-bloqueado" class="md-nav__link">
+    <span class="md-ellipsis">
+      Criando um bucket S3 com acesso público bloqueado
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/nataliagranato/intensive-terraform/edit/master/docs/day-1/README.md" title="Editar esta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/nataliagranato/intensive-terraform/raw/master/docs/day-1/README.md" title="Exibir fonte desta página" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 18c.56 0 1 .44 1 1s-.44 1-1 1-1-.44-1-1 .44-1 1-1m0-3c-2.73 0-5.06 1.66-6 4 .94 2.34 3.27 4 6 4s5.06-1.66 6-4c-.94-2.34-3.27-4-6-4m0 6.5a2.5 2.5 0 0 1-2.5-2.5 2.5 2.5 0 0 1 2.5-2.5 2.5 2.5 0 0 1 2.5 2.5 2.5 2.5 0 0 1-2.5 2.5M9.27 20H6V4h7v5h5v4.07c.7.08 1.36.25 2 .49V8l-6-6H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h4.5a8.2 8.2 0 0 1-1.23-2"/></svg>
+    </a>
+  
+
+
+<h1 id="conhecendo-o-terraform">Conhecendo o Terraform<a class="headerlink" href="#conhecendo-o-terraform" title="Permanent link">&para;</a></h1>
+<h2 id="o-que-e-o-terraform">O que é o Terraform?<a class="headerlink" href="#o-que-e-o-terraform" title="Permanent link">&para;</a></h2>
+<p>Terraform é uma ferramenta de código aberto para provisionamento de infraestrutura como código (IaC). Ele permite que você defina e gerencie a infraestrutura de nuvem em um formato legível por humanos e máquinas, usando uma linguagem de configuração chamada HCL (HashiCorp Configuration Language).</p>
+<h2 id="o-que-e-hcl">O que é HCL?<a class="headerlink" href="#o-que-e-hcl" title="Permanent link">&para;</a></h2>
+<p>HCL é a linguagem de configuração usada pelo Terraform. É uma linguagem declarativa, o que significa que você descreve o estado desejado da sua infraestrutura, e o Terraform se encarrega de chegar a esse estado. A HCL usa uma sintaxe simples e legível, com blocos, argumentos e identificadores.</p>
+<h2 id="o-que-e-o-statefile">O que é o Statefile?<a class="headerlink" href="#o-que-e-o-statefile" title="Permanent link">&para;</a></h2>
+<p>O statefile é um arquivo JSON que armazena o estado atual da infraestrutura gerenciada pelo Terraform. Ele mapeia os recursos do Terraform para os recursos reais na nuvem. O statefile é crucial para que o Terraform possa determinar as alterações necessárias para alcançar o estado desejado.</p>
+<h2 id="infraestrutura-mutavel-vs-imutavel">Infraestrutura Mutável vs. Imutável<a class="headerlink" href="#infraestrutura-mutavel-vs-imutavel" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Infraestrutura Mutável:</strong> É a abordagem tradicional, onde os servidores e recursos são atualizados no local. Isso pode levar a inconsistências e dificuldades de gerenciamento à medida que a infraestrutura cresce.</li>
+<li><strong>Infraestrutura Imutável:</strong> É uma abordagem moderna, onde os servidores e recursos são substituídos por novos quando necessário. Isso garante consistência e facilita o gerenciamento, pois cada recurso tem um estado conhecido e imutável.</li>
+</ul>
+<h2 id="conceitos-basicos-de-cloud">Conceitos Básicos de Cloud<a class="headerlink" href="#conceitos-basicos-de-cloud" title="Permanent link">&para;</a></h2>
+<h3 id="providers-regiao-e-zona">Providers, Região e Zona<a class="headerlink" href="#providers-regiao-e-zona" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Providers:</strong> São plugins que permitem que o Terraform se integre com diferentes provedores de nuvem, como AWS, Azure e GCP.</li>
+<li><strong>Região:</strong> É uma localização geográfica onde os recursos da nuvem são provisionados.</li>
+<li><strong>Zona:</strong> É uma subdivisão dentro de uma região, que oferece isolamento e redundância.</li>
+</ul>
+<h2 id="bucket-para-garantir-o-mesmo-estado">Bucket para garantir o mesmo estado<a class="headerlink" href="#bucket-para-garantir-o-mesmo-estado" title="Permanent link">&para;</a></h2>
+<p>Para garantir que a equipe utilize o mesmo estado do Terraform, é essencial usar um bucket centralizado (como o S3 da AWS) para armazenar o statefile. Isso garante que todos os membros da equipe estejam trabalhando com a mesma versão do estado da infraestrutura.</p>
+<h2 id="criando-um-usuario-iam-na-aws">Criando um usuário IAM na AWS<a class="headerlink" href="#criando-um-usuario-iam-na-aws" title="Permanent link">&para;</a></h2>
+<p>Para iniciar o uso do Terraform na AWS, você precisa criar um usuário IAM com permissões suficientes para gerenciar os recursos da AWS. Para isso você pode usar o console da AWS ou a CLI.</p>
+<p>Para criar um usuário IAM utilizando a CLI, você pode usar o seguinte comando:</p>
+<p>Exemplo:</p>
+<pre><code class="language-bash">aws iam create-user --user-name meu-usuario
+aws iam attach-user-policy --user-name meu-usuario --policy-arn arn:aws:iam::aws
+/AdministratorAccess
+aws iam create-access-key --user-name meu-usuario
+</code></pre>
+<p>Este comando irá criar um usuário IAM chamado <code>meu-usuario</code>, anexar a política <code>AdministratorAccess</code> a ele e criar uma chave de acesso para ele. Guarde a chave de acesso e a chave secreta em um local seguro, pois elas serão usadas para autenticar o Terraform na AWS.</p>
+<p>Esse caso de uso é para usuários que já possuem um usuario e desejam criar um novo usuario para o Terraform, caso você não tenha um usuario, utilize a opção de criar um usuario no console da AWS.</p>
+<h2 id="criando-um-bucket-s3-com-acesso-publico-bloqueado">Criando um bucket S3 com acesso público bloqueado<a class="headerlink" href="#criando-um-bucket-s3-com-acesso-publico-bloqueado" title="Permanent link">&para;</a></h2>
+<p>Para criar um bucket S3 com acesso público bloqueado, você pode usar a CLI da AWS ou o console da AWS.</p>
+<p>Exemplo (Console):</p>
+<ol>
+<li>
+<p><strong>Acessar o S3:</strong></p>
+</li>
+<li>
+<p>Faça login na sua conta da AWS.</p>
+</li>
+<li>
+<p>No menu de serviços, procure por "S3" e selecione-o.</p>
+</li>
+<li>
+<p><strong>Criar um Bucket:</strong></p>
+</li>
+<li>
+<p>Clique no botão "Criar bucket".</p>
+</li>
+<li>
+<p>Forneça um nome único para o seu bucket. Esse nome é global, ou seja, não pode ser repetido.</p>
+</li>
+<li>
+<p>Selecione a região onde deseja armazenar o bucket.</p>
+</li>
+<li>
+<p><strong>Bloquear Acesso Público:</strong></p>
+</li>
+<li>
+<p>Na seção "Bloquear acesso público", ative todas as opções. Isso garante que o acesso público ao bucket seja bloqueado por padrão.</p>
+</li>
+<li>
+<p>Clique em "Criar bucket".</p>
+</li>
+<li>
+<p><strong>Verificar as Configurações:</strong></p>
+</li>
+<li>
+<p>Na lista de buckets, clique no nome do bucket que você acabou de criar.</p>
+</li>
+<li>Vá para a aba "Permissões".</li>
+<li>Na seção "Bloquear acesso público", verifique se todas as opções estão ativadas.</li>
+</ol>
+<p><strong>Observações:</strong></p>
+<ul>
+<li>Bloquear o acesso público é uma prática de segurança importante para proteger seus dados.</li>
+<li>Você pode conceder acesso a usuários ou serviços específicos por meio de políticas de bucket, ACLs (listas de controle de acesso) e funções do IAM.</li>
+<li>Se você precisar de acesso público para algum conteúdo específico, é possível criar uma política de bucket que permita acesso a objetos específicos.</li>
+</ul>
+<p>Exemplo (CLI):</p>
+<pre><code class="language-bash">aws s3api create-bucket --bucket meu-bucket --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2 --acl private
+</code></pre>
+<h1 id="entendendo-o-terraform">Entendendo o Terraform<a class="headerlink" href="#entendendo-o-terraform" title="Permanent link">&para;</a></h1>
+<h2 id="hcl-hashicorp-configuration-language">HCL (HashiCorp Configuration Language)<a class="headerlink" href="#hcl-hashicorp-configuration-language" title="Permanent link">&para;</a></h2>
+<p>HCL é a linguagem de configuração usada pelo Terraform para definir a infraestrutura como código.</p>
+<h2 id="argumentos">Argumentos<a class="headerlink" href="#argumentos" title="Permanent link">&para;</a></h2>
+<p>São valores passados para um recurso ou módulo. No exemplo <code>image_id = "abc123"</code>, "image_id" é o argumento e "abc123" é o valor.</p>
+<h2 id="blocos">Blocos<a class="headerlink" href="#blocos" title="Permanent link">&para;</a></h2>
+<p>São contêineres para outros conteúdos, como argumentos ou outros blocos aninhados. O exemplo mostra um bloco <code>network_interface</code> dentro do recurso <code>aws_instance</code>.</p>
+<pre><code class="language-hcl">resource &quot;aws_instance&quot; &quot;web&quot; {
+  ami           = &quot;ami-0c55b159cbfafe1f0&quot;
+  instance_type = &quot;t2.micro&quot;
+
+  network_interface {
+    network_interface_id = &quot;eni-123456&quot;
+    device_index         = 0
+  }
+}
+</code></pre>
+<h2 id="identificadores">Identificadores<a class="headerlink" href="#identificadores" title="Permanent link">&para;</a></h2>
+<p>São nomes usados para referenciar recursos, variáveis, etc. Eles devem seguir regras específicas de codificação e terminação de linha.</p>
+<pre><code class="language-hcl">resource &quot;aws_instance&quot; &quot;web&quot; {
+  ami           = &quot;ami-0c55b159cbfafe1f0&quot;
+  instance_type = &quot;t2.micro&quot;
+}
+</code></pre>
+<h2 id="instalacao">Instalação<a class="headerlink" href="#instalacao" title="Permanent link">&para;</a></h2>
+<p>Para instalar o Terraform, consulte a <a href="https://developer.hashicorp.com/terraform/install">documentação oficial</a>.</p>
+<h2 id="comandos-basicos">Comandos Básicos<a class="headerlink" href="#comandos-basicos" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>terraform init --upgrade</code>: Inicializa o diretório de trabalho e baixa os plugins necessários. <code>--upgrade</code> garante que os plugins estejam atualizados.</li>
+<li><code>terraform plan</code>: Mostra um plano de execução, listando as ações que o Terraform irá realizar.</li>
+<li><code>terraform apply</code>: Executa o plano de execução, criando ou modificando a infraestrutura.</li>
+<li><code>terraform destroy</code>: Destrói a infraestrutura criada pelo Terraform.</li>
+</ul>
+<h2 id="autenticacao">Autenticação<a class="headerlink" href="#autenticacao" title="Permanent link">&para;</a></h2>
+<h3 id="usando-o-provider">Usando o Provider<a class="headerlink" href="#usando-o-provider" title="Permanent link">&para;</a></h3>
+<p>O bloco <code>provider "aws"</code> define as credenciais de acesso e a região da AWS.</p>
+<pre><code class="language-hcl">provider &quot;aws&quot; {
+  region     = &quot;us-west-2&quot;
+  access_key = &quot;my-access-key&quot;
+  secret_key = &quot;my-secret-key&quot;
+}
+</code></pre>
+<p>Por questões de segurança, é recomendável não armazenar as credenciais diretamente no código. Em vez disso, você pode usar variáveis de ambiente, arquivos de configuração ou serviços de autenticação.</p>
+<h3 id="usando-variaveis-de-ambiente">Usando Variáveis de Ambiente<a class="headerlink" href="#usando-variaveis-de-ambiente" title="Permanent link">&para;</a></h3>
+<p>É possível definir as variáveis <code>AWS_ACCESS_KEY_ID</code>, <code>AWS_SECRET_ACCESS_KEY</code> e <code>AWS_REGION</code> no ambiente para autenticar o Terraform.</p>
+<pre><code class="language-bash">export AWS_ACCESS_KEY_ID=&quot;my-access-key&quot;
+export AWS_SECRET_ACCESS=&quot;my-secret-key&quot;
+export AWS_REGION=&quot;us-west-2&quot;
+</code></pre>
+<p>Depois de exportar suas variáveis de ambiente, o Terraform usará essas credenciais para se autenticar na AWS. Lembre-se de proteger suas credenciais e não compartilhá-las publicamente.</p>
+<h2 id="backend-remoto">Backend remoto<a class="headerlink" href="#backend-remoto" title="Permanent link">&para;</a></h2>
+<p>O backend remoto permite armazenar o statefile em um local centralizado, como um bucket S3. Isso facilita o trabalho em equipe e garante a consistência do estado da infraestrutura.</p>
+<p>Exemplo de configuração de backend remoto:</p>
+<pre><code class="language-hcl">terraform {
+  backend &quot;s3&quot; {
+    bucket = &quot;my-terraform-state&quot;
+    key    = &quot;terraform.tfstate&quot;
+    region = &quot;us-west-2&quot;
+  }
+</code></pre>
+<p>Adicione essa configuração ao seu arquivo <code>.tf</code> para usar um backend remoto.</p>
+<p>Caso o terraform já tenha sido inicializado com um backend local, você pode migrar para um backend remoto, normalmente ao utilizar o <code>terraform init</code> ele irá perguntar se deseja levar para o seu backend o estado local, caso não pergunte, você pode forçar a migração com o comando <code>terraform init -reconfigure</code>. Em caso de erro use o comando <code>terraform init -migrate-state</code>.</p>
+<h1 id="o-que-sao-os-providers-no-terraform">O que são os providers no Terraform?<a class="headerlink" href="#o-que-sao-os-providers-no-terraform" title="Permanent link">&para;</a></h1>
+<p>Os providers são plugins que permitem que o Terraform interaja com diferentes provedores de nuvem, como AWS, Azure, GCP, etc. Cada provedor tem seu próprio plugin, que fornece os recursos e a lógica necessária para gerenciar a infraestrutura na nuvem.</p>
+<p>Para usar um provedor no Terraform, você precisa configurar as credenciais de acesso e a região do provedor. Isso permite que o Terraform se autentique e provisione recursos na nuvem.</p>
+<p>Exemplo de configuração de um provedor AWS:</p>
+<pre><code class="language-hcl">provider &quot;aws&quot; {
+  region     = &quot;us-west-2&quot;
+  access_key = &quot;my-access
+  secret_key
+  = &quot;my-secret key&quot;
+}
+</code></pre>
+<p>Neste exemplo, o bloco <code>provider "aws"</code> configura o provedor AWS com a região <code>us-west-2</code> e as credenciais de acesso fornecidas. Isso permite que o Terraform provisione recursos na AWS.</p>
+<p>Outra forma de autenticar o Terraform é utilizando variáveis de ambiente, como <code>AWS_ACCESS_KEY_ID</code> e <code>AWS_SECRET_ACCESS_KEY</code>. Isso evita a exposição de credenciais no código e facilita a gestão de segurança.</p>
+<pre><code class="language-bash">export AWS_ACCESS_KEY_ID=&quot;my-access-key&quot;
+export AWS_SECRET_ACCESS_KEY=&quot;my-secret-key&quot;
+export AWS_REGION=&quot;us-west-2&quot;
+</code></pre>
+<h2 id="utilizando-o-alias-para-multiplos-providers">Utilizando o alias para múltiplos providers<a class="headerlink" href="#utilizando-o-alias-para-multiplos-providers" title="Permanent link">&para;</a></h2>
+<p>Com essa opção, é possível utilizar múltiplos providers de um mesmo tipo, por exemplo, dois providers AWS, um para cada região. Para isso, é necessário utilizar o alias para diferenciar os providers.</p>
+<pre><code class="language-hcl">terraform {
+  backend &quot;s3&quot; {
+    bucket = &quot;descomplicando-terraform-turma-2024&quot;
+    key    = &quot;aula_backend&quot;
+    region = &quot;us-east-1&quot;
+  }
+  required_providers {
+    aws = {
+      source  = &quot;hashicorp/aws&quot;
+      version = &quot;~&gt; 5.0&quot;
+    }
+  }
+}
+
+# Configure the AWS Provider
+provider &quot;aws&quot; {
+  region = &quot;us-east-2&quot;
+}
+
+provider &quot;aws&quot; {
+  alias  = &quot;west&quot;
+  region = &quot;us-west-2&quot;
+}
+</code></pre>
+<h1 id="o-que-e-e-como-usar-variaveis-no-terraform">O que é e como usar variáveis no Terraform?<a class="headerlink" href="#o-que-e-e-como-usar-variaveis-no-terraform" title="Permanent link">&para;</a></h1>
+<p>É a possibilidade de definir valores dinâmicos para os recursos, evitando a repetição de código e facilitando a manutenção. Além disso, as informações que precisam ser alteradas com frequência nao ficam fixas no código - o chamado hardcode -.</p>
+<p>Podemos modificar o comportamento do código de acordo com o ambiente, como por exemplo, alterar o nome de uma instância EC2 de acordo com as variáveis de ambiente, de distintas maneiras.</p>
+<h3 id="declarando-variaveis">Declarando variáveis<a class="headerlink" href="#declarando-variaveis" title="Permanent link">&para;</a></h3>
+<p>É possível declarar variáveis no arquivo <code>variables.tf</code> ou diretamente no arquivo <code>.tf</code> que está sendo utilizado no bloco chamado <code>variable</code>.</p>
+<pre><code class="language-hcl">variable &quot;instance_name&quot; {
+  description = &quot;O nome da instância EC2&quot;
+  type        = string
+  default     = &quot;my-instance&quot;
+}
+</code></pre>
+<p>As principais formas de declarar variáveis são:</p>
+<ul>
+<li><strong>Linha de comando:</strong> Usando a flag <code>-var</code> para passar valores diretamente na linha de comando.</li>
+</ul>
+<pre><code class="language-bash">terraform plan -out plano -var=&quot;instance_name=my-instance&quot;
+</code></pre>
+<ul>
+<li><strong>Arquivo de variáveis:</strong> Criando um arquivo de variáveis separado e passando-o para o Terraform no bloco <code>variables</code>.</li>
+</ul>
+<pre><code class="language-hcl">variable &quot;instance_name&quot; {
+  type = string
+  description = &quot;O nome da instância EC2&quot;
+}
+</code></pre>
+<p>No arquivo de variáveis voce pode definir um valor como sensivel, para isso basta adicionar o atributo <code>sensitive = true</code> na declaração da variável.</p>
+<ul>
+<li><strong>Variáveis de ambiente:</strong> Usando variáveis de ambiente para definir valores.</li>
+</ul>
+<pre><code class="language-bash">export TF_VAR_instance_name=my-instance
+</code></pre>
+<ul>
+<li>Utilizando o arquivo <strong><code>terraform.tfvars</code></strong> para definir as variáveis. O arquivo pode ter o seguinte conteúdo:</li>
+</ul>
+<pre><code class="language-hcl">instance_name = &quot;my-instance&quot;
+</code></pre>
+<p>Para utilizar o arquivo de <strong><code>terraform.tfvars</code></strong>:</p>
+<pre><code class="language-bash">terraform plan -out plano -var-file=&quot;testing.tfvars&quot;
+</code></pre>
+<p>Outra forma de utilizar o <code>.tfvars</code> é através do <code>auto.tfvars</code>, assim:</p>
+<pre><code class="language-bash">terraform plan -out plano
+</code></pre>
+<p>O terraform irá buscar automaticamente o arquivo <code>auto.tfvars</code> ou <code>terraform.tfvars</code> para carregar as variáveis.</p>
+<p>Caso você os distintos arquivos de declaração de variáveis, o Terraform irá seguir a seguinte ordem de importância para carregar as variáveis:</p>
+<ol>
+<li>Variáveis de ambiente.</li>
+<li>Utilizando -var e -var-file na linha de comando.</li>
+<li>Utilizando os arquivos que terminam com <code>.auto.tfvars</code>.</li>
+<li>Utilizando os arquivos que terminam com <code>.tfvars</code>.</li>
+</ol>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Voltar para o topo
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Rodapé" >
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Anterior: Terraform Intensivo">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Anterior
+              </span>
+              <div class="md-ellipsis">
+                Terraform Intensivo
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../day-2/" class="md-footer__link md-footer__link--next" aria-label="Próximo: O state file do Terraform">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Próximo
+              </span>
+              <div class="md-ellipsis">
+                O state file do Terraform
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/nataliagranato" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://bsky.app/profile/nataliagranato.bsky.social" target="_blank" rel="noopener" title="bsky.app" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M111.8 62.2C170.2 105.9 233 194.7 256 242.4c23-47.6 85.8-136.4 144.2-180.2 42.1-31.6 110.3-56 110.3 21.8 0 15.5-8.9 130.5-14.1 149.2-18.2 64.8-84.4 81.4-143.3 71.3C456 322 482.2 380 425.6 438c-107.4 110.2-154.3-27.6-166.3-62.9-1.7-4.9-2.6-7.8-3.3-7.8s-1.6 3-3.3 7.8c-12 35.3-59 173.1-166.3 62.9-56.5-58-30.4-116 72.5-133.5C100 314.6 33.8 298 15.7 233.1 10.4 214.4 1.5 99.4 1.5 83.9c0-77.8 68.2-53.4 110.3-21.8z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://x.com/granatowp" target="_blank" rel="noopener" title="x.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8l164.9-188.5L26.8 48h145.6l100.5 132.9zm-24.8 373.8h39.1L151.1 88h-42z"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.instagram.com/granatowp" target="_blank" rel="noopener" title="www.instagram.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141m0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7m146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8m76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8M398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["announce.dismiss", "content.action.edit", "content.action.view", "content.code.annotate", "content.code.copy", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.sections", "navigation.tabs", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copiado para \u00e1rea de transfer\u00eancia", "clipboard.copy": "Copiar para \u00e1rea de transfer\u00eancia", "search.result.more.one": "mais 1 nesta p\u00e1gina", "search.result.more.other": "# mais nesta p\u00e1gina", "search.result.none": "Nenhum documento encontrado", "search.result.one": "1 documento encontrado", "search.result.other": "# documentos encontrados", "search.result.placeholder": "Digite para iniciar a busca", "search.result.term.missing": "Ausente", "select.version": "Selecione a vers\u00e3o"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.f1b6f286.min.js"></script>
+      
+    
+  </body>
+</html>
