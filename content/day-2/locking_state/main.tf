@@ -18,6 +18,10 @@ resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
 
+  root_block_device {
+    encrypted = true
+  }
+
   tags = {
     Name       = "HelloWorld"
     Env        = "develop"
@@ -28,6 +32,10 @@ resource "aws_instance" "web" {
 resource "aws_instance" "web2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.micro"
+
+  root_block_device {
+    encrypted = true
+  }
 
   tags = {
     Name       = "HelloWorld"

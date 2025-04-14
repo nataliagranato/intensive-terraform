@@ -31,6 +31,14 @@ resource "aws_instance" "web" {
     ]
   }
 
+  metadata_options {
+    http_tokens = "required"
+  }
+
+  root_block_device {
+    encrypted = true
+  }
+
   depends_on = [
     aws_instance.bd
   ]
@@ -48,5 +56,9 @@ resource "aws_instance" "bd" {
 
   lifecycle {
     create_before_destroy = true
+  }
+
+  root_block_device {
+    encrypted = true
   }
 }
