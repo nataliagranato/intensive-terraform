@@ -1,6 +1,6 @@
 module github.com/nataliagranato/intensive-terraform/terratest
 
-go 1.23.0
+go 1.24.0
 
 require (
 	github.com/gruntwork-io/terratest v0.46.8
@@ -44,12 +44,12 @@ require (
 	github.com/ulikunitz/xz v0.5.14 // indirect
 	github.com/zclconf/go-cty v1.14.1 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	golang.org/x/crypto v0.32.0 // indirect
-	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/crypto v0.45.0 // indirect
+	golang.org/x/net v0.47.0 // indirect
 	golang.org/x/oauth2 v0.27.0 // indirect
-	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/sys v0.29.0 // indirect
-	golang.org/x/text v0.21.0 // indirect
+	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sys v0.38.0 // indirect
+	golang.org/x/text v0.31.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
 	google.golang.org/api v0.149.0 // indirect
 	google.golang.org/genproto v0.0.0-20231106174013-bbf56f31fb17 // indirect
