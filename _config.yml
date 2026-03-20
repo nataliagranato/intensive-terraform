@@ -1,0 +1,21 @@
+title: Terraform Intensivo
+description: Um guia prático e direto para profissionais que desejam dominar a arte de codificar infraestrutura.
+theme: jekyll-theme-primer
+
+# Prevent Liquid template errors from ${{ }} syntax in code examples
+liquid:
+  error_mode: warn
+
+# Exclude files that should not be processed by Jekyll
+exclude:
+  - CHANGELOG
+  - CODEOWNERS
+  - CONTRIBUTING.md
+  - MAINTENANCE.md
+  - SECURITY.md
+  - SUMMARY.md
+  - TERRAFORM.md
+  - LICENSE
+  - .coderabbit.yaml
+  - .github
+  - content/lives
